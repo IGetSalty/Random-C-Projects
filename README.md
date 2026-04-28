@@ -1,4 +1,4 @@
-Welcome to Random C++ Projects. In this Repo you'll find some Random C++ Projects. These projcets are largely based off the "Introduction to Algorithms" book that everyone knows and loves, and a book on C++ Memory Management. 
+Welcome to Random C++ Projects. In this Repo you'll find some Random C++ Projects. These projects are largely based off the "Introduction to Algorithms" book that everyone knows and loves, and a book on C++ Memory Management. 
 
 I will be using Python from time to time to create small handy tools, for instance creating large .txt files full of numbers for testing Sorting Algorithms. My end goal is to build myself a voxel engine. 
 
