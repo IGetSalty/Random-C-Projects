@@ -4,6 +4,15 @@
 #include <vector>
 #include <chrono>
 #include <math.h>
+#include <algorithm>
+
+std::string file = "random_data.txt";
+std::string merge = "output_mergesort.txt";
+std::string heap = "output_heapsort.txt";
+std::string quick = "output_quicksort.txt";
+std::string randquick = "output_randomquicksort.txt";
+std::string counting = "output_countingsort.txt";
+std::string output = "output_data.txt";
 
 /////////////////////////////////////////////////////////////////////////
 //Utilities
@@ -189,12 +198,53 @@ void Quicksort(std::vector<int>& A, int p, int r) {
 }
 
 ///////////////
+//Randomized Quicksort
+///////////////
+
+int RandomPartition(std::vector<int>& A, int p, int r) {
+    int i = (rand() % (r-p+1)) + p;
+    std::swap(A[r],A[i]);
+    return Partition(A, p, r);
+}
+
+void RandomQuickSort(std::vector<int>& A, int p, int r) {
+    if (p<r) {
+        int q =  RandomPartition(A,p,r);
+        RandomQuickSort(A,p,q-1);
+        RandomQuickSort(A,q+1,r);
+    }
+}
+
+
+///////////////
 //Bucket
 ///////////////
 
 ///////////////
 //Counting
 ///////////////
+std::vector<int> CountingSort(std::vector<int>& A, std::vector<int>& B) {
+    int k = *std::max_element(A.begin(), A.end());
+    std::vector<int> C(k + 1, 0);
+    
+    B.resize(A.size());
+
+    for (int j = 0; j < A.size(); j++) {
+        C[A[j]]++;
+    }
+
+    for (int i = 1; i <= k; i++) {
+        C[i] += C[i - 1];
+    }
+
+    for (int j = A.size() - 1; j >= 0; j--) {
+        B[C[A[j]] - 1] = A[j];
+        C[A[j]]--;
+    }
+
+    return B;
+}
+
 
 ///////////////
 //Radix
@@ -205,43 +255,147 @@ void Quicksort(std::vector<int>& A, int p, int r) {
 //Main
 /////////////////////////////////////////////////////////////////////////
 
-void algoRunner(int a, std::vector<int>& data,std::string inputfile) {
+void algoRunner(int a, std::vector<int>& data) {
     
     
+if (a == 1) {
+
+    std::cout << "Insertion Sorting" << std::endl;
+
     auto start = std::chrono::high_resolution_clock::now();
-    
-    if (a==1) {                                 
-        InsertionSort(data);
-    } else if (a==2) {                         
-        std::vector<int> b(data.size());
-        topDownMergeSort(data,b,data.size());
-    } else if (a==3) {
-        Heapsort(data);
-    } else if (a==4) {
-        Quicksort(data,0,size(data)-1);
-    }
-    
+
+    InsertionSort(data);
+
     auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
 
-    auto duration = (end - start);
+    writeResults(data, output);
 
-    std::cout << "Insertion sort time: " << duration.count() << std::endl;
+    std::cout << "Time taken (Insertion Sort): "
+              << duration.count() << " seconds\n";
 }
+
+else if (a == 2) {
+
+    std::cout << "Merge Sorting" << std::endl;
+
+    std::vector<int> b(data.size());
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    topDownMergeSort(data, b, data.size());
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    writeResults(data, merge);
+
+    std::cout << "Time taken (Merge Sort): "
+              << duration.count() << " seconds\n";
+}
+
+else if (a == 3) {
+
+    std::cout << "Heap Sorting" << std::endl;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Heapsort(data);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    writeResults(data, heap);
+
+    std::cout << "Time taken (Heap Sort): "
+              << duration.count() << " seconds\n";
+}
+
+else if (a == 4) {
+
+    std::cout << "Quick Sorting" << std::endl;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Quicksort(data, 0, size(data) - 1);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    writeResults(data, quick);
+
+    std::cout << "Time taken (Quick Sort): "
+              << duration.count() << " seconds\n";
+}
+
+else if (a == 5) {
+
+    std::cout << "Random Quick Sorting" << std::endl;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    RandomQuickSort(data, 0, size(data) - 1);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    writeResults(data, randquick);
+
+    std::cout << "Time taken (Random Quick Sort): "
+              << duration.count() << " seconds\n";
+}
+
+else if (a == 6) {
+    std::vector<int> B;
+    std::cout << "Counting Sorting" << std::endl;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    B = CountingSort(data,B);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    writeResults(B, counting);
+
+    std::cout << "Time taken (Counting Sort): "
+              << duration.count() << " seconds\n";
+}
+}
+
 
 int  main() {
 
-    std::vector<int> data;
-    int a = 3; //1 = Insertion Sort 2 = Merge Sort 3 = Heap Sort
-    
-    std::string file = "random_data.txt";
-    std::string output = "output_data_merge.txt";
+    std::vector<int> mergedata,heapdata,
+    quickdata,randomquickdata,countingdata;
 
-    fillVector(data,file);
-    algoRunner(a,data,file);
-    writeResults(data,output);
+    fillVector(mergedata,file);
+    fillVector(heapdata,file);
+    fillVector(quickdata,file);
+    fillVector(randomquickdata,file);
+    fillVector(countingdata,file);
+
+    //MergeSort
+    algoRunner(2,mergedata);
+    std::cout<< std::endl;
+
+    //HeapSort
+    algoRunner(3,heapdata);
+    std::cout<< std::endl;
+
+    //QuickSort
+    algoRunner(4,quickdata);
+    std::cout<< std::endl;
+
+    //RandomQuickSort
+    algoRunner(5,randomquickdata);
+    std::cout<< std::endl;
+    
+    //Counting
+    algoRunner(6,countingdata);
+    std::cout<< std::endl;
     
     std::cin.get();
-    
     
     return 0;
 
