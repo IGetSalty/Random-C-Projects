@@ -1,0 +1,6 @@
+Tasks
+-----------
+
+1) Get user input for description (default completed and assign id)
+2) Create Array and assign new task to that list
+3) Create counter for capacity
