@@ -42,6 +42,10 @@ class TaskList {
             tasks[size++] = t;
         }
 
+        void CompleteTask(int a) {
+            tasks[a-1].completed=true;
+        }
+
         void PrintAll() {
             for (int i = 0; i < size; i++) {
                 tasks[i].print();

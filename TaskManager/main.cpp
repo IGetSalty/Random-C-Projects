@@ -4,10 +4,6 @@
 #include <iostream>
 #include <limits>
 
-
-
-
-
 int main() {
 
     //TaskList* a = NULL; //Null pointer for dynamically allocated array for TaskList
@@ -33,8 +29,16 @@ int main() {
 
     List.PrintAll();
 
+    std::cout << "Please enter the id of the task you'd like to mark as completed? ";
+    int c; 
+    std::cin >> c;
+    List.CompleteTask(c);
+
+    List.PrintAll();
+
     std::cin.get();
-    std::cout << "This is a test message" << std::endl;
+    std::cout << std::endl;
+    std::cout << "end of program" << std::endl;
     std::cin.get();
 
     return 0;
