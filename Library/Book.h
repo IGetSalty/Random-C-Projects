@@ -16,7 +16,17 @@ class Book {
             : Title(title), Author(author), Year(year),isBorrowed(isborrowed) {}
 
         void printBook() const {
-            std::cout << Title << " " << Author << " " << Year << (isBorrowed ? "[Y] " : " [N] " );
+            std::cout << Title << " " << Author << " " << Year << (isBorrowed ? "[Unavailable] " : " [Available] " ) << std::endl;
         }
 
+        bool getisBorrowed() const {
+            return isBorrowed;
+        }
+
+        void BorrowBook(Book& t) const {
+
+            t.isBorrowed = true;
+
+
+        }
 };
