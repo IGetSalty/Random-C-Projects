@@ -14,6 +14,7 @@ class Library {
         void addBook(const Book& book) {
             int number;
             std::cout << "Welcome to the adding a book utility! " << std::endl;
+            std::cout << "-------------------------------------------------" << std::endl;
             std::cout << std::endl;
 
             std::cout << "How many books would you like to add? ";
@@ -40,11 +41,12 @@ class Library {
                 std::cout << "Please enter the year of publishing: ";
                 std::cin >> year;
                 
-                std::cout << std::endl;
-
+                //std::cout << std::endl;
+                std::cout << "-------------------------------------------------" << std::endl;
                 std::cin.get();
                 books.push_back(Book(title,author,year,false));
                 //std::cin.get();
+                
             }
         };
 
@@ -55,6 +57,7 @@ class Library {
 
                 books[i].printBook();
             }
+            std::cout << std::endl;
         };
 
 
@@ -67,10 +70,54 @@ class Library {
                 }
             
             }
+            std::cout << std::endl;
         };
         
-        //void borrowBook(const std::string& title);
-        //void returnBook(const std::string& title);
+        void borrowBook() {
+            std::string tit;
+            showAvailableBooks();
+            std::cin.get();
+            std::cout << "Which book would you like to borrow (enter Title): ";
+            std::getline(std::cin,tit);
+            std::cin.get();
+            for (std::size_t i = 0; i < books.size(); i++) {
+                if (books[i].getTitle() == tit) {
+
+                    if (books[i].getisBorrowed() == true) {
+                        std::cout << "Book is already borrowed, try another one!" << std::endl;
+                    }
+                    else {
+                        books[i].BorrowBook(books[i]);
+                    }
+                }
+            }
+            std::cin.get();
+            showAvailableBooks();
+            
+        };
+        
+        void returnBook() {
+            std::string tit;
+            showAllBooks();
+            std::cin.get();
+            std::cout << "Which book would you like to return (enter Title): ";
+            std::getline(std::cin,tit);
+
+
+            for (std::size_t i = 0; i < books.size(); i++) {
+                if (books[i].getTitle() == tit) {
+
+                    if (books[i].getisBorrowed() == false) {
+                        std::cout << "Book hasn't been borrowed yet, would you like to borrow it?" << std::endl;
+                    }
+                    else {
+                        books[i].ReturnBook(books[i]);
+                    }
+                }
+            }
+            std::cin.get();
+            showAvailableBooks();
+        };
 
 
 };
